@@ -11,55 +11,59 @@ using namespace arma;
 ofstream ofile;
 
 void writeArraysToFile(mat, string[], int, int);
+void matrixTransactions(int, int, int, double, mat&);
 
 int main(int argc, char const *argv[])
 {
-	// RNG
-	std::random_device rd;
-	std::mt19937_64 gen(rd());
-	std::uniform_real_distribution<double> rand(0.0,1.0);
-
 	// "Initial conditions"
 	int N = 500;
 	int transactions = int(pow(10,6));
 	int mcc = atoi(argv[1]);
-	//int mcc = int(pow(20,1));
+	int saving = 0;
 	double m0 = 2.0;
 
 	// other declerations
 	mat agents(N,mcc);
 	agents.col(0) = m0*ones<vec>(N);
 
-	// 'montecarlo loop'
+	matrixTransactions(N, mcc, transactions, saving, agents);
+
+	// write to file
+	string filename = to_string(mcc) + "_" + to_string(int(log10(transactions)));
+	agents.save(filename,csv_ascii);
+
+	return 0;
+}
+
+void matrixTransactions(int N, int mcc, int transactions, double saving, mat& agents){
+	// RNG
+	std::random_device rd;
+	std::mt19937_64 gen(rd());
+	std::uniform_real_distribution<double> rand(0.0,1.0);
+
+	// 'montecarlo loop' 
 	for (int i = 1; i < mcc; ++i){	
 		agents.col(i) = agents.col(i-1);
 		cout << "mcc#\t" << i << endl;
-
 		// perform transactions
 		double j = 0;
 		while (j < transactions){
 			int k = (int)(N*rand(gen));
 			int l = (int)(N*rand(gen));
 			if(k == l){continue;}
-			double sum = agents(k,i) + agents(l, i);
+			double dm = (agents(k,i) + agents(l, i));
 			agents(k,i) = rand(gen)*sum;
 			agents(l,i) = sum-agents(k,i);
 			j++;
 		}
 	}
-
-	cout << endl << sum(agents,0) << endl;
-
-	// write to file
-	//string filename = to_string(mcc) + "_" + to_string(int(log10(transactions)));
-	//agents.save(filename,csv_ascii);
-
-	return 0;
 }
 
 void writeArraysToFile(mat arrays, string labels[], int N, int mcc){
 
 }
+
+
 
 /*
 void WriteResultstoFile(int NSpins, int mcc, double temperature, vec ExpectationValues, int accept)
