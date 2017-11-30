@@ -13,14 +13,11 @@ with open('100_6',"r") as infile:
 
 # 5a
 dm = 0.05
-agentsFinal = matrix[:,-1]
-b = 1/(mean(agentsFinal))
-bins = arange(0,max(agentsFinal),dm)
-x = zeros(len(bins)-1)
-for i in range(m):
-	print("loop" + str(i))
-	x = x+hist( agentsFinal, bins = bins , normed = 1)[0]
+average = (matrix[::,1:]).flatten()
+bins = arange(0,max(average),dm)
+b = 1/mean(average)
 
+hist(average, bins = bins , normed = 1)
 plot(bins,b*exp(-b*bins))
 show()
 

@@ -24,6 +24,7 @@ int main(int argc, char const *argv[])
 
 	// other declerations
 	mat agents(N,mcc);
+	mat agentsAvg(N,mcc);
 	agents.col(0) = m0*ones<vec>(N);
 
 	matrixTransactions(N, mcc, transactions, saving, agents);
@@ -51,9 +52,10 @@ void matrixTransactions(int N, int mcc, int transactions, double saving, mat& ag
 			int k = (int)(N*rand(gen));
 			int l = (int)(N*rand(gen));
 			if(k == l){continue;}
-			double dm = (agents(k,i) + agents(l, i));
-			agents(k,i) = rand(gen)*sum;
-			agents(l,i) = sum-agents(k,i);
+			double eps = rand(gen);
+			double dm = (1-saving)*(eps*agents(l,i)-(1-eps)*agents(k,i));
+			agents(k,i) += dm;
+			agents(l,i) -= dm;
 			j++;
 		}
 	}
