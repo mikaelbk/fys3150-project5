@@ -29,9 +29,9 @@ matrix = getMatrix("0.00l.txt")
 
 # 5a
 excld = 1
-dm = 0.05
+dm = 0.01
 average = (matrix[::,excld::]).flatten()
-bins = arange(0,max(average),dm,)
+bins = arange(0,2.5,dm)
 b = 1/mean(average)
 """
 hist(average, bins = bins , normed = 1)
@@ -54,16 +54,20 @@ matrix3 = getMatrix("0.50l.txt")
 matrix4 = getMatrix("0.75l.txt")
 matrix5 = getMatrix("0.90l.txt")
 y1 = histogram(average, bins = bins , normed = 1)[0]
-y2 = histogram(matrix2[::,excld::], bins = bins , normed = 1)[0]
-y3 = histogram(matrix3[::,excld::], bins = bins , normed = 1)[0]
-y4 = histogram(matrix4[::,excld::], bins = bins , normed = 1)[0]
-y5 = histogram(matrix5[::,excld::], bins = bins , normed = 1)[0]
+y2 = histogram(matrix2[::,excld::].flatten(), bins = bins , normed = 1)[0]
+y3 = histogram(matrix3[::,excld::].flatten(), bins = bins , normed = 1)[0]
+y4 = histogram(matrix4[::,excld::].flatten(), bins = bins , normed = 1)[0]
+y5 = histogram(matrix5[::,excld::].flatten(), bins = bins , normed = 1)[0]
 x = bins[0:-1]
-plot(x,b*exp(-b*x), label = "gibbs distribution")
 plot(x,y1, '.',label = "l=0")
 plot(x,y2, '.',label = "l=0.25")
 plot(x,y3, '.',label = "l=0.50")
 plot(x,y4, '.',label = "l=0.75")
-plot(x,y4, '.',label = "l=0.90")
+plot(x,y5, '.',label = "l=0.90")
+plot(x,fitting(x,0.00), label = "gibbs distribution")
+plot(x,fitting(x,0.25),'b')
+plot(x,fitting(x,0.50),'b')
+plot(x,fitting(x,0.75),'b')
+plot(x,fitting(x,0.90),'b')
 legend()
-show()
+savefig("plot1.png")

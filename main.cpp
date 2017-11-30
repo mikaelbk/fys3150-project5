@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
 {
 	// "Initial conditions"
 	int N = 500;
-	int transactions = int(pow(10,6));
+	int transactions = int(pow(10,7));
 	int mcc = 100;
 	double saving = atof(argv[1]);
 	double m0 = atof(argv[2]);
