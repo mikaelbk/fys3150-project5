@@ -37,6 +37,8 @@ bins = arange(0,7.0,dm)
 b = 1/mean(average)
 
 hist(average, bins = bins , normed = 1)
+ylabel('Number of agents')
+xlabel('Relative wealth (arbitrary currency/amount)')
 plot(bins,b*exp(-b*bins))
 savefig('l0Histrogram.pdf')
 
@@ -52,6 +54,8 @@ savefig('logPlot.png')
 
 #5c
 figure()
+ylabel('Number of agents')
+xlabel('Relative wealth (arbitrary currency/amount)')
 bins = arange(0,2.5,dm)
 matrix2 = getMatrix("0.25l.txt")
 matrix3 = getMatrix("0.50l.txt")
@@ -63,11 +67,11 @@ y3 = histogram(matrix3[::,excld::].flatten(), bins = bins , normed = 1)[0]
 y4 = histogram(matrix4[::,excld::].flatten(), bins = bins , normed = 1)[0]
 y5 = histogram(matrix5[::,excld::].flatten(), bins = bins , normed = 1)[0]
 x = bins[0:-1]
-plot(x,y1, '.',label = "l=0")
-plot(x,y2, '.',label = "l=0.25")
-plot(x,y3, '.',label = "l=0.50")
-plot(x,y4, '.',label = "l=0.75")
-plot(x,y5, '.',label = "l=0.90")
+plot(x,y1, '.',label = "$\lambda = 0.00$")
+plot(x,y2, '.',label = "$\lambda = 0.25$")
+plot(x,y3, '.',label = "$\lambda = 0.50$")
+plot(x,y4, '.',label = "$\lambda = 0.75$")
+plot(x,y5, '.',label = "$\lambda = 0.90$")
 plot(x,fitting(x,0.00), label = "gibbs distribution")
 plot(x,fitting(x,0.25),'b')
 plot(x,fitting(x,0.50),'b')
