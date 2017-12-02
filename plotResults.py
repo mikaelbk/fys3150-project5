@@ -26,16 +26,17 @@ def fitting(x,lam):
 	an = n**n/gamma(n)
 	return an*x**(n-1)*exp(-n*x)
 
-matrix = getMatrix("0.00l.txt")
 
+
+matrix = getMatrix("0.00l.txt")
 # 5a
-figure()
-excld = 1
+excld = 50
 dm = 0.01
 average = (matrix[::,excld::]).flatten()
 bins = arange(0,7.0,dm)
 b = 1/mean(average)
-
+"""
+figure()
 hist(average, bins = bins , normed = 1)
 ylabel('Number of agents')
 xlabel('Relative wealth (arbitrary currency/amount)')
@@ -53,6 +54,7 @@ legend()
 savefig('logPlot.png')
 
 #5c
+dm = 0.01
 figure()
 ylabel('Number of agents')
 xlabel('Relative wealth (arbitrary currency/amount)')
@@ -79,3 +81,28 @@ plot(x,fitting(x,0.75),'b')
 plot(x,fitting(x,0.90),'b')
 legend()
 savefig("lamdbaComparisons.pdf")
+"""
+
+#5d
+
+dm = 0.01
+figure()
+ylabel('Number of agents in percent')
+xlabel('Relative wealth (arbitrary currency/amount)')
+matrix1 = getMatrix("test_0.txt")
+matrix2 = getMatrix("test_1.txt")
+matrix3 = getMatrix("test_2.txt")
+matrix4 = getMatrix("test_3.txt")
+mMax = max(matrix4.flatten())
+bins = arange(0,mMax,dm)
+y1 = histogram(matrix1[::,excld::].flatten(), bins = bins , normed = 100)[0]
+y2 = histogram(matrix2[::,excld::].flatten(), bins = bins , normed = 100)[0]
+y3 = histogram(matrix3[::,excld::].flatten(), bins = bins , normed = 100)[0]
+y4 = histogram(matrix4[::,excld::].flatten(), bins = bins , normed = 100)[0]
+x = bins[0:-1]
+loglog(x,y1, label = "$\\alpha = 0.5$")
+loglog(x,y2, label = "$\\alpha = 1.0$")
+loglog(x,y3, label = "$\\alpha = 1.5$")
+loglog(x,y4, label = "$\\alpha = 2.0$")
+legend()
+show()
