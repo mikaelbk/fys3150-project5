@@ -2,6 +2,7 @@ from numpy import *
 from matplotlib.pyplot import *
 import csv
 from scipy.special import gamma
+rc('text',usetex = True)
 
 def getMatrix(filename):
 	with open(filename,"r") as infile:
@@ -28,27 +29,30 @@ def fitting(x,lam):
 matrix = getMatrix("0.00l.txt")
 
 # 5a
+figure()
 excld = 1
 dm = 0.01
 average = (matrix[::,excld::]).flatten()
-bins = arange(0,2.5,dm)
+bins = arange(0,7.0,dm)
 b = 1/mean(average)
-"""
+
 hist(average, bins = bins , normed = 1)
 plot(bins,b*exp(-b*bins))
-show()
+savefig('l0Histrogram.pdf')
 
 # 5b
+figure()
 x = sort(average)
 y = log10(b*exp(-b*x))
 linear = polyfit(x,y,1)
 plot(x,y,'.')
 plot(x,polyval(linear,x),'r',label = 'f(x)=%.2fx%.2f'%(linear[0],linear[1]))
 legend()
-show()
-"""
+savefig('logPlot.png')
 
 #5c
+figure()
+bins = arange(0,2.5,dm)
 matrix2 = getMatrix("0.25l.txt")
 matrix3 = getMatrix("0.50l.txt")
 matrix4 = getMatrix("0.75l.txt")
@@ -70,4 +74,4 @@ plot(x,fitting(x,0.50),'b')
 plot(x,fitting(x,0.75),'b')
 plot(x,fitting(x,0.90),'b')
 legend()
-savefig("plot1.png")
+savefig("lamdbaComparisons.pdf")
